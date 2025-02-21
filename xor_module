@@ -1,0 +1,33 @@
+`timescale 1ns / 1ps
+
+module xor_module(
+    input sig_1,
+    input sig_2,
+    output wire result
+    );
+    
+    assign result = sig_1 ^ sig_2;
+endmodule
+
+module xor_tb;
+    reg sig_1;
+    reg sig_2;
+    wire result;
+ xor_module uut (
+        .sig_1(sig_1),
+        .sig_2(sig_2),
+        .result(result)
+ );
+ 
+ initial begin
+    sig_1 = 0;
+    sig_2 = 0;
+    
+    #5 sig_1 = 0; sig_2 = 1; // 0+1   
+    #5 sig_1 = 1; sig_2 = 0; // 1+0
+    #5 sig_1 = 1; sig_2 = 1; // 1+1
+    #5 sig_1 = 0; sig_2 = 0; // 0+0
+    
+    #10 $finish;
+    end
+ endmodule
