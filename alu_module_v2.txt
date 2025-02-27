@@ -1,0 +1,91 @@
+`timescale 1ns / 1ps
+
+module alu_module(
+    input[3:0] a,
+    input[3:0] b,
+    input[3:0] cmd,
+    output reg[3:0] q
+    );
+   
+   
+  always @(*) begin 
+    case(cmd)
+        4'b0000: q = 4'b0000; //Обнуление
+        4'b0001: q = a & b;
+        4'b0010: q = a | b;
+        4'b0011: q = a ^ b;
+        4'b0100: q = a + b;
+        4'b0101: q = a - b;
+        default: q = 4'b0000; //Значение по умолчанию
+        endcase
+    end
+endmodule
+
+//Alu testing module
+module alu_test();
+//Initialising inputs
+    reg[3:0] cmd_reg;
+    reg[3:0] a_reg;
+    reg[3:0] b_reg;
+//Initialising outputs
+    wire[3:0] q;
+    
+    alu_module UUT (
+    .a(a_reg),
+    .b(b_reg),
+    .cmd(cmd_reg),
+    .q(q)
+    );
+    
+    initial begin
+    a_reg = 4'b0000;
+    b_reg = 4'b0000;
+    cmd_reg = 4'b0000;
+    
+    #25 cmd_reg = 4'b0001;
+    #5 a_reg = 4'b0001; b_reg = 4'b0000;
+    #5 a_reg = 4'b0000; b_reg = 4'b0001;
+    #5 a_reg = 4'b0001; b_reg = 4'b0001;
+    #5 a_reg = 4'b0000; b_reg = 4'b0000;
+
+    #5 cmd_reg = 4'b0010;
+    #5 a_reg = 4'b0001; b_reg = 4'b0000;
+    #5 a_reg = 4'b0000; b_reg = 4'b0001;
+    #5 a_reg = 4'b0001; b_reg = 4'b0001;
+    #5 a_reg = 4'b0000; b_reg = 4'b0000;
+    
+    #5 cmd_reg = 4'b0011;
+    #5 a_reg = 4'b0001; b_reg = 4'b0000;
+    #5 a_reg = 4'b0000; b_reg = 4'b0001;
+    #5 a_reg = 4'b0001; b_reg = 4'b0001;
+    #5 a_reg = 4'b0000; b_reg = 4'b0000;
+
+    #5 cmd_reg = 4'b0100;
+    #5 a_reg = 4'b0001; b_reg = 4'b0000;
+    #5 a_reg = 4'b0000; b_reg = 4'b0001;
+    #5 a_reg = 4'b0001; b_reg = 4'b0001;
+    #5 a_reg = 4'b0000; b_reg = 4'b0000;
+
+    #5 cmd_reg = 4'b0101;
+    #5 a_reg = 4'b0001; b_reg = 4'b0000;
+    #5 a_reg = 4'b0000; b_reg = 4'b0001;
+    #5 a_reg = 4'b0001; b_reg = 4'b0001;
+    #5 a_reg = 4'b0000; b_reg = 4'b0000;
+    
+    #5 cmd_reg = 4'b0111;
+    #5 a_reg = 4'b0001; b_reg = 4'b0000;
+    #5 a_reg = 4'b0000; b_reg = 4'b0001;
+    #5 a_reg = 4'b0001; b_reg = 4'b0001;
+    #5 a_reg = 4'b0000; b_reg = 4'b0000;
+    
+    #5 cmd_reg = 4'b1000;
+    #5 a_reg = 4'b0001; b_reg = 4'b0000;
+    #5 a_reg = 4'b0000; b_reg = 4'b0001;
+    #5 a_reg = 4'b0001; b_reg = 4'b0001;
+    #5 a_reg = 4'b0000; b_reg = 4'b0000;
+    
+    #10;
+    $finish;
+    
+    end
+endmodule
